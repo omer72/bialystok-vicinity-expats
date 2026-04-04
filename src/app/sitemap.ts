@@ -19,6 +19,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/archive`, changeFrequency: 'yearly' as const, priority: 0.5 },
     { url: `${BASE_URL}/videos`, changeFrequency: 'monthly' as const, priority: 0.5 },
     { url: `${BASE_URL}/related-sites`, changeFrequency: 'yearly' as const, priority: 0.4 },
+    { url: `${BASE_URL}/about/goals`, changeFrequency: 'yearly' as const, priority: 0.7 },
+    { url: `${BASE_URL}/about/structure`, changeFrequency: 'yearly' as const, priority: 0.7 },
+    { url: `${BASE_URL}/history/milestones`, changeFrequency: 'yearly' as const, priority: 0.7 },
+    { url: `${BASE_URL}/memorial-book`, changeFrequency: 'yearly' as const, priority: 0.6 },
+    { url: `${BASE_URL}/cemetery-restoration`, changeFrequency: 'yearly' as const, priority: 0.5 },
+    { url: `${BASE_URL}/events/torah-scroll-2016`, changeFrequency: 'yearly' as const, priority: 0.5 },
+    { url: `${BASE_URL}/events/scientific-conference-2010`, changeFrequency: 'yearly' as const, priority: 0.5 },
+    { url: `${BASE_URL}/gallery`, changeFrequency: 'monthly' as const, priority: 0.6 },
   ];
 
   const peoplePages = people.map((person) => ({

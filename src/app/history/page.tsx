@@ -117,6 +117,15 @@ export default function HistoryPage() {
             subtitle="קריית ביאליסטוק נבנתה ביהוד ע&quot;י יוצאי העיר ביאליסטוק שבפולין כמעשה של הנצחה ושמירת מורשת."
           />
 
+          <div className="text-center mb-6">
+            <Link
+              href="/history/milestones"
+              className="text-primary-700 font-semibold hover:text-primary-900 transition-colors"
+            >
+              לעמוד ציוני הדרך המלא &larr;
+            </Link>
+          </div>
+
           <div className="relative max-w-3xl mx-auto mt-12">
             {/* Timeline line */}
             <div className="absolute top-0 bottom-0 right-4 md:right-1/2 w-[2px] bg-neutral-300 md:-translate-x-[1px]" />

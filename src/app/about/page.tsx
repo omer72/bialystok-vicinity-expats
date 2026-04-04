@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
 import SectionHeader from '@/components/SectionHeader';
 import FadeIn from '@/components/FadeIn';
@@ -65,6 +66,14 @@ export default function AboutPage() {
       <section className="py-16 md:py-24 bg-neutral-100">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader title="מטרות העמותה" />
+          <div className="text-center mb-6">
+            <Link
+              href="/about/goals"
+              className="text-primary-700 font-semibold hover:text-primary-900 transition-colors"
+            >
+              לעמוד מטרות העמותה המלא &larr;
+            </Link>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
             {goals.map((goal, i) => (
               <FadeIn key={goal.title} delay={i * 150}>
@@ -98,6 +107,14 @@ export default function AboutPage() {
           <p className="mt-8 text-center text-body-md text-neutral-500">
             כ-280 נמענים בקרית ביאליסטוק ובכול הארץ.
           </p>
+          <div className="mt-4 text-center">
+            <Link
+              href="/about/structure"
+              className="text-primary-700 font-semibold hover:text-primary-900 transition-colors"
+            >
+              לעמוד המבנה הארגוני המלא &larr;
+            </Link>
+          </div>
         </div>
       </section>
     </>
