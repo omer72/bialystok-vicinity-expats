@@ -22,21 +22,24 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useAdmin } from '../layout';
+import ImageUpload from '@/components/ImageUpload';
 
 interface BlogPost {
   slug: string;
   title: string;
   type: string;
+  image?: string;
   body: string;
 }
 
 interface BlogFormData {
   title: string;
   slug: string;
+  image: string;
   body: string;
 }
 
-const emptyForm: BlogFormData = { title: '', slug: '', body: '' };
+const emptyForm: BlogFormData = { title: '', slug: '', image: '', body: '' };
 
 export default function AdminBlogsPage() {
   const { showToast } = useAdmin();
@@ -66,7 +69,7 @@ export default function AdminBlogsPage() {
     const res = await fetch(`/api/admin/blogs/${slug}`);
     if (res.ok) {
       const data = await res.json();
-      setForm({ title: data.title, slug: data.slug, body: data.body });
+      setForm({ title: data.title, slug: data.slug, image: data.image || '', body: data.body });
       setEditingSlug(slug);
       setFormOpen(true);
     }
@@ -163,6 +166,10 @@ export default function AdminBlogsPage() {
               sx={{ direction: 'ltr' }}
             />
           )}
+          <ImageUpload
+            value={form.image}
+            onChange={(path) => setForm({ ...form, image: path })}
+          />
           <TextField
             label="תוכן (Markdown)"
             value={form.body}

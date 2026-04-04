@@ -22,6 +22,7 @@ export async function GET(
   return Response.json({
     slug: file.slug,
     title: file.frontmatter.title || "",
+    image: file.frontmatter.image || "",
     frontmatter: file.frontmatter,
     body: file.body,
   });
@@ -40,13 +41,17 @@ export async function PUT(
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
-  const { title, body, frontmatter } = await request.json();
+  const { title, image, body, frontmatter } = await request.json();
 
   const fm: Record<string, string> = {
     ...existing.frontmatter,
     ...frontmatter,
   };
   if (title) fm.title = title;
+  if (image !== undefined) {
+    if (image) fm.image = image;
+    else delete fm.image;
+  }
 
   writeFile(BLOG_POSTS_DIR, slug, fm, body ?? existing.body);
 

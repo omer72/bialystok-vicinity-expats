@@ -22,6 +22,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useAdmin } from '../layout';
+import ImageUpload from '@/components/ImageUpload';
 
 interface Person {
   slug: string;
@@ -193,11 +194,9 @@ export default function AdminPeoplePage() {
             multiline
             minRows={2}
           />
-          <TextField
-            label="נתיב תמונה"
+          <ImageUpload
             value={form.image}
-            onChange={(e) => setForm({ ...form, image: e.target.value })}
-            sx={{ direction: 'ltr' }}
+            onChange={(path) => setForm({ ...form, image: path })}
           />
           <TextField
             label="תוכן (Markdown)"

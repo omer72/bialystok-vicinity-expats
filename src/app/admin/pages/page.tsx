@@ -22,20 +22,23 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useAdmin } from '../layout';
+import ImageUpload from '@/components/ImageUpload';
 
 interface PageItem {
   slug: string;
   title: string;
+  image?: string;
   body: string;
 }
 
 interface PageFormData {
   title: string;
   slug: string;
+  image: string;
   body: string;
 }
 
-const emptyForm: PageFormData = { title: '', slug: '', body: '' };
+const emptyForm: PageFormData = { title: '', slug: '', image: '', body: '' };
 
 export default function AdminPagesPage() {
   const { showToast } = useAdmin();
@@ -65,7 +68,7 @@ export default function AdminPagesPage() {
     const res = await fetch(`/api/admin/pages/${slug}`);
     if (res.ok) {
       const data = await res.json();
-      setForm({ title: data.title, slug: data.slug, body: data.body });
+      setForm({ title: data.title, slug: data.slug, image: data.image || '', body: data.body });
       setEditingSlug(slug);
       setFormOpen(true);
     }
@@ -161,6 +164,10 @@ export default function AdminPagesPage() {
             disabled={!!editingSlug}
             required={!editingSlug}
             sx={{ direction: 'ltr' }}
+          />
+          <ImageUpload
+            value={form.image}
+            onChange={(path) => setForm({ ...form, image: path })}
           />
           <TextField
             label="תוכן (Markdown)"

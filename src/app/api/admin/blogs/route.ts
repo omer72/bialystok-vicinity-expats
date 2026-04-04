@@ -23,7 +23,7 @@ export async function GET() {
 export async function POST(request: Request) {
   if (!(await verifyAdmin())) return unauthorized();
 
-  const { title, slug: providedSlug, body, frontmatter } = await request.json();
+  const { title, slug: providedSlug, image, body, frontmatter } = await request.json();
 
   if (!title) {
     return Response.json({ error: "Title is required" }, { status: 400 });
@@ -44,6 +44,7 @@ export async function POST(request: Request) {
     scraped_at: new Date().toISOString().split("T")[0],
     ...frontmatter,
   };
+  if (image) fm.image = image;
 
   writeFile(BLOG_POSTS_DIR, slug, fm, body || "");
 
