@@ -6,6 +6,7 @@ import FadeIn from '@/components/FadeIn';
 export const metadata: Metadata = {
   title: 'אודות',
   description: 'אודות ארגון יוצאי ביאליסטוק והסביבה בישראל — מטרות העמותה, מבנה ארגוני והיסטוריה.',
+  alternates: { canonical: '/about' },
 };
 
 const goals = [

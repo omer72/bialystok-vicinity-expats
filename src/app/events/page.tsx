@@ -5,6 +5,7 @@ import FadeIn from '@/components/FadeIn';
 export const metadata: Metadata = {
   title: 'אירועים',
   description: 'אירועי ארגון יוצאי ביאליסטוק — טכסי אזכרה, כנסים ופעילויות קהילתיות.',
+  alternates: { canonical: '/events' },
 };
 
 const events = [

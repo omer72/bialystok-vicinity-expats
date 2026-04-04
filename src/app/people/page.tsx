@@ -8,6 +8,7 @@ import { people } from '@/lib/people';
 export const metadata: Metadata = {
   title: 'אישים מביאליסטוק',
   description: 'אישים מפורסמים מקהילת ביאליסטוק — רבנים, מדענים, מנהיגים ולוחמים.',
+  alternates: { canonical: '/people' },
 };
 
 export default function PeoplePage() {

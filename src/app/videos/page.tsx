@@ -4,6 +4,7 @@ import PageHeader from '@/components/PageHeader';
 export const metadata: Metadata = {
   title: 'וידיאו',
   description: 'סרטוני וידיאו הקשורים לקהילת ביאליסטוק והעמותה.',
+  alternates: { canonical: '/videos' },
 };
 
 export default function VideosPage() {

@@ -4,6 +4,7 @@ import PageHeader from '@/components/PageHeader';
 export const metadata: Metadata = {
   title: 'מפות ביאליסטוק והגטו',
   description: 'מפות היסטוריות של העיר ביאליסטוק והגטו.',
+  alternates: { canonical: '/maps' },
 };
 
 export default function MapsPage() {

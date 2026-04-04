@@ -4,6 +4,7 @@ import PageHeader from '@/components/PageHeader';
 export const metadata: Metadata = {
   title: 'אתרים קשורים',
   description: 'אתרים קשורים לקהילת ביאליסטוק ולנושאי שואה והנצחה.',
+  alternates: { canonical: '/related-sites' },
 };
 
 const sites = [

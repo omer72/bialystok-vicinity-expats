@@ -4,6 +4,7 @@ import PageHeader from '@/components/PageHeader';
 export const metadata: Metadata = {
   title: 'ספר זיכרון לביאליסטוק',
   description: 'ספר הזיכרון של קהילת ביאליסטוק — ארכיון דיגיטלי.',
+  alternates: { canonical: '/archive' },
 };
 
 export default function ArchivePage() {

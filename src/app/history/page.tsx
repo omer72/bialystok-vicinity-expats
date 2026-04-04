@@ -8,6 +8,7 @@ import FadeIn from '@/components/FadeIn';
 export const metadata: Metadata = {
   title: 'היסטוריה',
   description: 'תולדות יהודי ביאליסטוק, קריית ביאליסטוק והעמותה — ציוני דרך מ-1949 ועד היום.',
+  alternates: { canonical: '/history' },
 };
 
 const timelineEntries = [

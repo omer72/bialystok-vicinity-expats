@@ -94,7 +94,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) return {};
-  return { title: post.title, description: post.excerpt };
+  return { title: post.title, description: post.excerpt, alternates: { canonical: `/blog/${slug}` } };
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {

@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const person = people.find((p) => p.slug === slug);
   if (!person) return {};
-  return { title: person.name, description: person.description };
+  return { title: person.name, description: person.description, alternates: { canonical: `/people/${slug}` } };
 }
 
 const NAV_ITEMS = [

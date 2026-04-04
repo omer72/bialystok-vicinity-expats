@@ -4,6 +4,7 @@ import PageHeader from '@/components/PageHeader';
 export const metadata: Metadata = {
   title: 'המוזאון היהודי בביאליסטוק',
   description: 'המוזאון היהודי בביאליסטוק — מידע על המוזאון ואוספיו.',
+  alternates: { canonical: '/museum' },
 };
 
 export default function MuseumPage() {

@@ -8,6 +8,7 @@ import { blogPosts } from '@/lib/blog';
 export const metadata: Metadata = {
   title: 'סיפורי ניצולים',
   description: 'סיפורי ניצולי שואה מקהילת ביאליסטוק — עדויות, זכרונות ותעודות.',
+  alternates: { canonical: '/blog' },
 };
 
 export default function BlogPage() {
