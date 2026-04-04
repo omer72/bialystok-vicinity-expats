@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -20,10 +22,10 @@ interface ContentCounts {
 }
 
 const sections = [
-  { key: 'blogs' as const, label: 'פוסטים בבלוג', icon: <ArticleIcon sx={{ fontSize: 40 }} />, color: '#2A5A8C' },
-  { key: 'people' as const, label: 'אישים', icon: <PeopleIcon sx={{ fontSize: 40 }} />, color: '#8B6914' },
-  { key: 'events' as const, label: 'אירועים', icon: <EventIcon sx={{ fontSize: 40 }} />, color: '#2D8A56' },
-  { key: 'pages' as const, label: 'דפים', icon: <DescriptionIcon sx={{ fontSize: 40 }} />, color: '#C0392B' },
+  { key: 'blogs' as const, label: 'פוסטים בבלוג', icon: <ArticleIcon sx={{ fontSize: 40 }} />, color: '#2A5A8C', href: '/admin/blogs' },
+  { key: 'people' as const, label: 'אישים', icon: <PeopleIcon sx={{ fontSize: 40 }} />, color: '#8B6914', href: '/admin/people' },
+  { key: 'events' as const, label: 'אירועים', icon: <EventIcon sx={{ fontSize: 40 }} />, color: '#2D8A56', href: '/admin/events' },
+  { key: 'pages' as const, label: 'דפים', icon: <DescriptionIcon sx={{ fontSize: 40 }} />, color: '#C0392B', href: '/admin/pages' },
 ];
 
 export default function AdminDashboard() {
@@ -62,15 +64,17 @@ export default function AdminDashboard() {
         {sections.map((section) => (
           <Grid key={section.key} size={{ xs: 12, sm: 6, md: 3 }}>
             <Card>
-              <CardContent sx={{ textAlign: 'center', py: 3 }}>
-                <Box sx={{ color: section.color, mb: 1 }}>{section.icon}</Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: section.color }}>
-                  {counts[section.key]}
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  {section.label}
-                </Typography>
-              </CardContent>
+              <CardActionArea component={Link} href={section.href}>
+                <CardContent sx={{ textAlign: 'center', py: 3 }}>
+                  <Box sx={{ color: section.color, mb: 1 }}>{section.icon}</Box>
+                  <Typography variant="h3" sx={{ fontWeight: 700, color: section.color }}>
+                    {counts[section.key]}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    {section.label}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
             </Card>
           </Grid>
         ))}
