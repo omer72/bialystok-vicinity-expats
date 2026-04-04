@@ -21,8 +21,12 @@ import PeopleIcon from '@mui/icons-material/People';
 import EventIcon from '@mui/icons-material/Event';
 import DescriptionIcon from '@mui/icons-material/Description';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CloseIcon from '@mui/icons-material/Close';
 
 const DRAWER_WIDTH = 240;
+const DRAWER_WIDTH_COLLAPSED = 64;
 
 type ToastSeverity = 'success' | 'error' | 'info' | 'warning';
 
@@ -50,6 +54,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [desktopCollapsed, setDesktopCollapsed] = useState(false);
+
+  const currentDrawerWidth = desktopCollapsed ? DRAWER_WIDTH_COLLAPSED : DRAWER_WIDTH;
   const [toast, setToast] = useState<{ open: boolean; message: string; severity: ToastSeverity }>({
     open: false,
     message: '',
@@ -103,12 +110,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  const drawer = (
-    <Box>
-      <Toolbar>
+  const mobileDrawer = (
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Typography variant="h6" noWrap sx={{ fontWeight: 700 }}>
           ניהול האתר
         </Typography>
+        <IconButton onClick={() => setMobileOpen(false)} aria-label="סגור תפריט">
+          <CloseIcon />
+        </IconButton>
       </Toolbar>
       <List>
         {navItems.map((item) => (
@@ -134,10 +144,49 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </Box>
   );
 
+  const desktopDrawer = (
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Toolbar sx={{ justifyContent: desktopCollapsed ? 'center' : 'space-between', px: desktopCollapsed ? 0 : 2 }}>
+        {!desktopCollapsed && (
+          <Typography variant="h6" noWrap sx={{ fontWeight: 700 }}>
+            ניהול האתר
+          </Typography>
+        )}
+        <IconButton onClick={() => setDesktopCollapsed(!desktopCollapsed)} aria-label={desktopCollapsed ? 'הרחב תפריט' : 'כווץ תפריט'}>
+          {desktopCollapsed ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </IconButton>
+      </Toolbar>
+      <List>
+        {navItems.map((item) => (
+          <ListItemButton
+            key={item.href}
+            selected={pathname === item.href}
+            onClick={() => router.push(item.href)}
+            sx={{ justifyContent: desktopCollapsed ? 'center' : 'initial', px: desktopCollapsed ? 1 : 2 }}
+            title={desktopCollapsed ? item.label : undefined}
+          >
+            <ListItemIcon sx={{ minWidth: desktopCollapsed ? 0 : 56, justifyContent: 'center' }}>{item.icon}</ListItemIcon>
+            {!desktopCollapsed && <ListItemText primary={item.label} />}
+          </ListItemButton>
+        ))}
+      </List>
+      <List sx={{ mt: 'auto' }}>
+        <ListItemButton
+          onClick={handleLogout}
+          sx={{ justifyContent: desktopCollapsed ? 'center' : 'initial', px: desktopCollapsed ? 1 : 2 }}
+          title={desktopCollapsed ? 'התנתקות' : undefined}
+        >
+          <ListItemIcon sx={{ minWidth: desktopCollapsed ? 0 : 56, justifyContent: 'center' }}><LogoutIcon /></ListItemIcon>
+          {!desktopCollapsed && <ListItemText primary="התנתקות" />}
+        </ListItemButton>
+      </List>
+    </Box>
+  );
+
   return (
     <AdminContext.Provider value={{ showToast }}>
       <Box sx={{ display: 'flex', height: '100dvh' }}>
-        <AppBar position="fixed" sx={{ width: { md: `calc(100% - ${DRAWER_WIDTH}px)` }, mr: { md: `${DRAWER_WIDTH}px` } }}>
+        <AppBar position="fixed" sx={{ width: { md: `calc(100% - ${currentDrawerWidth}px)` }, mr: { md: `${currentDrawerWidth}px` }, transition: 'width 0.2s, margin 0.2s' }}>
           <Toolbar>
             <IconButton color="inherit" edge="start" onClick={() => setMobileOpen(!mobileOpen)} sx={{ display: { md: 'none' }, mr: 2 }}>
               <MenuIcon />
@@ -157,20 +206,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           ModalProps={{ keepMounted: true }}
           sx={{ display: { xs: 'block', md: 'none' }, '& .MuiDrawer-paper': { width: DRAWER_WIDTH } }}
         >
-          {drawer}
+          {mobileDrawer}
         </Drawer>
 
         {/* Desktop drawer */}
         <Drawer
           variant="permanent"
           anchor="right"
-          sx={{ display: { xs: 'none', md: 'block' }, '& .MuiDrawer-paper': { width: DRAWER_WIDTH, boxSizing: 'border-box' } }}
+          sx={{ display: { xs: 'none', md: 'block' }, '& .MuiDrawer-paper': { width: currentDrawerWidth, boxSizing: 'border-box', transition: 'width 0.2s', overflowX: 'hidden' } }}
           open
         >
-          {drawer}
+          {desktopDrawer}
         </Drawer>
 
-        <Box component="main" sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${DRAWER_WIDTH}px)` }, mt: '64px', overflow: 'auto' }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${currentDrawerWidth}px)` }, mt: '64px', overflow: 'auto', transition: 'width 0.2s' }}>
           {children}
         </Box>
       </Box>
