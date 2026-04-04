@@ -1,23 +1,22 @@
 import { verifyAdmin, unauthorized } from "@/lib/admin-auth";
 import {
   PAGES_DIR,
-  listFiles,
   writeFile,
   readFile,
   slugify,
 } from "@/lib/admin-content";
+import { pages } from "@/lib/pages";
 
 export async function GET() {
   if (!(await verifyAdmin())) return unauthorized();
 
-  const files = listFiles(PAGES_DIR);
-  const pages = files.map((f) => ({
-    slug: f.slug,
-    title: f.frontmatter.title || "",
-    body: f.body,
+  const items = pages.map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    body: "",
   }));
 
-  return Response.json(pages);
+  return Response.json(items);
 }
 
 export async function POST(request: Request) {

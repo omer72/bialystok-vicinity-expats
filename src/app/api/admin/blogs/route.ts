@@ -1,21 +1,20 @@
 import { verifyAdmin, unauthorized } from "@/lib/admin-auth";
 import {
   BLOG_POSTS_DIR,
-  listFiles,
   writeFile,
   readFile,
   slugify,
 } from "@/lib/admin-content";
+import { blogPosts } from "@/lib/blog";
 
 export async function GET() {
   if (!(await verifyAdmin())) return unauthorized();
 
-  const files = listFiles(BLOG_POSTS_DIR);
-  const posts = files.map((f) => ({
-    slug: f.slug,
-    title: f.frontmatter.title || "",
-    type: f.frontmatter.type || "",
-    body: f.body,
+  const posts = blogPosts.map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    type: "blog-post",
+    body: "",
   }));
 
   return Response.json(posts);

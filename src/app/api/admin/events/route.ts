@@ -1,23 +1,22 @@
 import { verifyAdmin, unauthorized } from "@/lib/admin-auth";
 import {
   EVENTS_DIR,
-  listFiles,
   writeFile,
   readFile,
   slugify,
 } from "@/lib/admin-content";
+import { events } from "@/lib/events";
 
 export async function GET() {
   if (!(await verifyAdmin())) return unauthorized();
 
-  const files = listFiles(EVENTS_DIR);
-  const events = files.map((f) => ({
-    slug: f.slug,
-    title: f.frontmatter.title || "",
-    body: f.body,
+  const items = events.map((e) => ({
+    slug: e.slug,
+    title: e.title,
+    body: "",
   }));
 
-  return Response.json(events);
+  return Response.json(items);
 }
 
 export async function POST(request: Request) {
