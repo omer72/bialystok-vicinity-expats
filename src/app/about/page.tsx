@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import PageHeader from '@/components/PageHeader';
 import SectionHeader from '@/components/SectionHeader';
+import FadeIn from '@/components/FadeIn';
 
 export const metadata: Metadata = {
   title: 'אודות',
@@ -64,14 +65,16 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader title="מטרות העמותה" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-            {goals.map((goal) => (
-              <div key={goal.title} className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4">
-                  <span className="text-display-lg text-primary-700 font-bold">{goal.title[0]}</span>
+            {goals.map((goal, i) => (
+              <FadeIn key={goal.title} delay={i * 150}>
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4">
+                    <span className="text-display-lg text-primary-700 font-bold">{goal.title[0]}</span>
+                  </div>
+                  <h3 className="text-heading-sm font-semibold text-primary-900">{goal.title}</h3>
+                  <p className="mt-2 text-body-md text-neutral-500">{goal.description}</p>
                 </div>
-                <h3 className="text-heading-sm font-semibold text-primary-900">{goal.title}</h3>
-                <p className="mt-2 text-body-md text-neutral-500">{goal.description}</p>
-              </div>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -82,14 +85,13 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader title="מבנה ארגוני" subtitle="ועד העמותה" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {boardMembers.map((member) => (
-              <div
-                key={member.name}
-                className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm text-center"
-              >
-                <p className="text-body-sm text-neutral-500 mb-1">{member.role}</p>
-                <p className="text-heading-sm font-semibold text-primary-900">{member.name}</p>
-              </div>
+            {boardMembers.map((member, i) => (
+              <FadeIn key={member.name} delay={i * 100}>
+                <div className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm text-center">
+                  <p className="text-body-sm text-neutral-500 mb-1">{member.role}</p>
+                  <p className="text-heading-sm font-semibold text-primary-900">{member.name}</p>
+                </div>
+              </FadeIn>
             ))}
           </div>
           <p className="mt-8 text-center text-body-md text-neutral-500">

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import SectionHeader from '@/components/SectionHeader';
+import FadeIn from '@/components/FadeIn';
 
 const timelineEntries = [
   { year: '1949', text: 'הקמת חברת "קריית ביאליסטוק פאונדיישן" בניו יורק' },
@@ -57,41 +58,47 @@ export default function HomePage() {
       {/* About Preview */}
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <SectionHeader title="מי אנחנו" />
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-body-lg text-neutral-700 leading-relaxed">
-              ברוכים הבאים לאתר הבית של ארגון יוצאי ביאליסטוק והסביבה בישראל.
-              הארגון הינו עמותה שמטרתה להנציח את קהילת יהודי העיר ביאליסטוק שבפולין וסביבותיה.
-              לזכר הקהילה ועבור קומץ ניצוליה נבנתה סמוך לקום המדינה שכונה בת כ-250 בתים פרטיים
-              בשם &quot;קריית ביאליסטוק&quot; (כיום חלק מהעיר יהוד-מונוסון).
-            </p>
-            <Link
-              href="/about"
-              className="inline-block mt-6 text-primary-700 font-semibold hover:text-primary-900 transition-colors"
-            >
-              קראו עוד על העמותה &larr;
-            </Link>
-          </div>
+          <FadeIn>
+            <SectionHeader title="מי אנחנו" />
+            <div className="max-w-3xl mx-auto text-center">
+              <p className="text-body-lg text-neutral-700 leading-relaxed">
+                ברוכים הבאים לאתר הבית של ארגון יוצאי ביאליסטוק והסביבה בישראל.
+                הארגון הינו עמותה שמטרתה להנציח את קהילת יהודי העיר ביאליסטוק שבפולין וסביבותיה.
+                לזכר הקהילה ועבור קומץ ניצוליה נבנתה סמוך לקום המדינה שכונה בת כ-250 בתים פרטיים
+                בשם &quot;קריית ביאליסטוק&quot; (כיום חלק מהעיר יהוד-מונוסון).
+              </p>
+              <Link
+                href="/about"
+                className="inline-block mt-6 text-primary-700 font-semibold hover:text-primary-900 transition-colors"
+              >
+                קראו עוד על העמותה &larr;
+              </Link>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* Survivor Stories Preview */}
       <section className="py-16 md:py-24 bg-neutral-100">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <SectionHeader title="סיפורי ניצולים" subtitle="עדויות מביאליסטוק ומהשואה" />
+          <FadeIn>
+            <SectionHeader title="סיפורי ניצולים" subtitle="עדויות מביאליסטוק ומהשואה" />
+          </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogPreviews.map((post) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
-                <article className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-                  <h3 className="text-heading-sm text-primary-900 font-semibold group-hover:text-primary-700 transition-colors">
-                    {post.title}
-                  </h3>
-                  <p className="mt-2 text-body-sm text-neutral-500 line-clamp-2">{post.excerpt}</p>
-                  <span className="mt-4 inline-block text-body-sm text-accent-500 font-medium">
-                    קראו עוד &larr;
-                  </span>
-                </article>
-              </Link>
+            {blogPreviews.map((post, i) => (
+              <FadeIn key={post.slug} delay={i * 100}>
+                <Link href={`/blog/${post.slug}`} className="group block">
+                  <article className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+                    <h3 className="text-heading-sm text-primary-900 font-semibold group-hover:text-primary-700 transition-colors">
+                      {post.title}
+                    </h3>
+                    <p className="mt-2 text-body-sm text-neutral-500 line-clamp-2">{post.excerpt}</p>
+                    <span className="mt-4 inline-block text-body-sm text-accent-500 font-medium">
+                      קראו עוד &larr;
+                    </span>
+                  </article>
+                </Link>
+              </FadeIn>
             ))}
           </div>
           <div className="mt-8 text-center">
@@ -108,17 +115,21 @@ export default function HomePage() {
       {/* History Timeline Preview */}
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <SectionHeader title="ציוני דרך" subtitle="מתולדות קריית ביאליסטוק" />
+          <FadeIn>
+            <SectionHeader title="ציוני דרך" subtitle="מתולדות קריית ביאליסטוק" />
+          </FadeIn>
           <div className="max-w-2xl mx-auto space-y-6">
-            {timelineEntries.map((entry) => (
-              <div key={entry.year} className="flex gap-4 items-start">
-                <span className="shrink-0 bg-primary-900 text-white text-body-sm font-bold px-3 py-1 rounded">
-                  {entry.year}
-                </span>
-                <p className="text-body-md text-neutral-700 border-r-4 border-accent-500 pr-4">
-                  {entry.text}
-                </p>
-              </div>
+            {timelineEntries.map((entry, i) => (
+              <FadeIn key={entry.year} delay={i * 150}>
+                <div className="flex gap-4 items-start">
+                  <span className="shrink-0 bg-primary-900 text-white text-body-sm font-bold px-3 py-1 rounded">
+                    {entry.year}
+                  </span>
+                  <p className="text-body-md text-neutral-700 border-r-4 border-accent-500 pr-4">
+                    {entry.text}
+                  </p>
+                </div>
+              </FadeIn>
             ))}
           </div>
           <div className="mt-8 text-center">
@@ -135,6 +146,7 @@ export default function HomePage() {
       {/* Membership CTA */}
       <section className="py-16 md:py-24 bg-accent-700">
         <div className="mx-auto max-w-7xl px-4 lg:px-8 text-center">
+          <FadeIn>
           <h2 className="text-display-lg text-white font-bold">הצטרפו למשפחת ביאליסטוק</h2>
           <p className="mt-4 text-body-lg text-white/90 max-w-xl mx-auto">
             שמרו על הקשר עם הקהילה, השתתפו באירועים וסייעו בהנצחת המורשת.
@@ -145,6 +157,7 @@ export default function HomePage() {
           >
             הצטרפו עכשיו
           </Link>
+          </FadeIn>
         </div>
       </section>
     </>

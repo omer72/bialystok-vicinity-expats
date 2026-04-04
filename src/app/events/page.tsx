@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import PageHeader from '@/components/PageHeader';
+import FadeIn from '@/components/FadeIn';
 
 export const metadata: Metadata = {
   title: 'אירועים',
@@ -59,9 +60,9 @@ export default function EventsPage() {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.map((event) => (
+            {events.map((event, i) => (
+              <FadeIn key={event.title} delay={(i % 3) * 100}>
               <article
-                key={event.title}
                 className="bg-white rounded-xl border border-neutral-200 overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all"
               >
                 <div className="p-6">
@@ -75,6 +76,7 @@ export default function EventsPage() {
                   <p className="mt-2 text-body-sm text-neutral-500 line-clamp-2">{event.description}</p>
                 </div>
               </article>
+              </FadeIn>
             ))}
           </div>
         </div>

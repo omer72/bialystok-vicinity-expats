@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import PageHeader from '@/components/PageHeader';
+import FadeIn from '@/components/FadeIn';
 import { people } from '@/lib/people';
 
 export const metadata: Metadata = {
@@ -17,8 +18,9 @@ export default function PeoplePage() {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {people.map((person) => (
-              <Link key={person.slug} href={`/people/${person.slug}`} className="group">
+            {people.map((person, i) => (
+              <FadeIn key={person.slug} delay={(i % 3) * 100}>
+              <Link href={`/people/${person.slug}`} className="group block">
                 <article className="bg-white rounded-xl border border-neutral-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all h-full overflow-hidden flex flex-col">
                   <div className="relative w-full h-56 bg-neutral-100">
                     {person.image ? (
@@ -49,6 +51,7 @@ export default function PeoplePage() {
                   </div>
                 </article>
               </Link>
+              </FadeIn>
             ))}
           </div>
         </div>

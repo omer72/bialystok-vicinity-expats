@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import PageHeader from '@/components/PageHeader';
+import FadeIn from '@/components/FadeIn';
 import { blogPosts } from '@/lib/blog';
 
 export const metadata: Metadata = {
@@ -17,8 +18,9 @@ export default function BlogPage() {
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blogPosts.map((post) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
+            {blogPosts.map((post, i) => (
+              <FadeIn key={post.slug} delay={(i % 3) * 100}>
+              <Link href={`/blog/${post.slug}`} className="group block">
                 <article className="bg-white rounded-xl border border-neutral-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all h-full flex flex-col overflow-hidden">
                   {post.image && (
                     <div className="relative w-full h-56 overflow-hidden bg-neutral-100">
@@ -43,6 +45,7 @@ export default function BlogPage() {
                   </div>
                 </article>
               </Link>
+              </FadeIn>
             ))}
           </div>
         </div>

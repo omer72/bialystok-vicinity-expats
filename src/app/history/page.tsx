@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
 import SectionHeader from '@/components/SectionHeader';
+import FadeIn from '@/components/FadeIn';
 
 export const metadata: Metadata = {
   title: 'היסטוריה',
@@ -121,26 +122,27 @@ export default function HistoryPage() {
 
             <div className="space-y-8">
               {timelineEntries.map((entry, i) => (
-                <div
-                  key={entry.year}
-                  className={`relative flex gap-6 md:gap-0 ${
-                    i % 2 === 0 ? 'md:flex-row-reverse' : ''
-                  }`}
-                >
-                  {/* Year badge */}
-                  <div className="shrink-0 z-10">
-                    <span className="inline-block bg-primary-900 text-white text-body-sm font-bold px-3 py-1.5 rounded">
-                      {entry.year}
-                    </span>
-                  </div>
+                <FadeIn key={entry.year} delay={i * 100}>
+                  <div
+                    className={`relative flex gap-6 md:gap-0 ${
+                      i % 2 === 0 ? 'md:flex-row-reverse' : ''
+                    }`}
+                  >
+                    {/* Year badge */}
+                    <div className="shrink-0 z-10">
+                      <span className="inline-block bg-primary-900 text-white text-body-sm font-bold px-3 py-1.5 rounded">
+                        {entry.year}
+                      </span>
+                    </div>
 
-                  {/* Content */}
-                  <div className={`flex-1 ${i % 2 === 0 ? 'md:text-left md:pl-8' : 'md:pr-8'}`}>
-                    <div className="bg-white rounded-xl border border-neutral-200 p-5 shadow-sm border-r-4 border-r-accent-500">
-                      <p className="text-body-md text-neutral-700">{entry.text}</p>
+                    {/* Content */}
+                    <div className={`flex-1 ${i % 2 === 0 ? 'md:text-left md:pl-8' : 'md:pr-8'}`}>
+                      <div className="bg-white rounded-xl border border-neutral-200 p-5 shadow-sm border-r-4 border-r-accent-500">
+                        <p className="text-body-md text-neutral-700">{entry.text}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </FadeIn>
               ))}
             </div>
           </div>
@@ -153,22 +155,21 @@ export default function HistoryPage() {
           <SectionHeader title="גלריית תמונות" subtitle="תמונות היסטוריות מקריית ביאליסטוק" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {historyImages.map((img) => (
-              <div
-                key={img.src}
-                className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group"
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  className="object-cover filter sepia-[0.3] group-hover:sepia-0 transition-[filter] duration-300"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                  <p className="text-body-sm text-white font-medium">{img.alt}</p>
+            {historyImages.map((img, i) => (
+              <FadeIn key={img.src} delay={i * 100}>
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    fill
+                    className="object-cover filter sepia-[0.3] group-hover:sepia-0 transition-[filter] duration-300"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                    <p className="text-body-sm text-white font-medium">{img.alt}</p>
+                  </div>
                 </div>
-              </div>
+              </FadeIn>
             ))}
           </div>
 
