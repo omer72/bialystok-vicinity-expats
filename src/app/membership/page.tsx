@@ -100,7 +100,7 @@ export default function MembershipPage() {
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="text-center mb-10">
             <h2 className="text-display-lg text-white font-bold">איך אפשר לעזור?</h2>
-            <div className="mt-4 mx-auto w-15 h-[3px] bg-accent-500" />
+            <div className="mt-4 mx-auto w-16 h-[3px] bg-accent-500" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
             {waysToHelp.map((w) => (

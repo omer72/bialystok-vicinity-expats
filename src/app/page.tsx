@@ -92,6 +92,7 @@ export default function HomePage() {
                 preload="none"
                 poster="/videos/reel-thumbnail.png"
                 className="w-full rounded-xl shadow-lg"
+                aria-label="סרטון קהילת ביאליסטוק — מורשת והנצחה"
               >
                 <source src="/videos/bialystok-reel.mp4" type="video/mp4" />
                 הדפדפן שלך אינו תומך בתגית וידאו.

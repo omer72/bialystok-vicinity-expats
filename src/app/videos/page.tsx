@@ -29,6 +29,7 @@ export default function VideosPage() {
               preload="none"
               poster="/videos/reel-thumbnail.png"
               className="w-full rounded-xl shadow-lg"
+              aria-label="סרטון קהילת ביאליסטוק — עדויות, טכסים ותיעוד היסטורי"
             >
               <source src="/videos/bialystok-reel.mp4" type="video/mp4" />
               הדפדפן שלך אינו תומך בתגית וידאו.
