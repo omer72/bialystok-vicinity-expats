@@ -61,6 +61,7 @@ export const people: Person[] = [
     name: 'שמואל פיזאר',
     nameEn: 'Shmuel Pisar',
     description: 'עורך דין בינלאומי, סופר וניצול שואה מביאליסטוק.',
+    image: '/images/5eeb4e_a79b588ea2d64e06859c26f2a4bb6be9_mv2.jpg',
     contentSlug: 'shmuel-pisar',
   },
   {
@@ -76,6 +77,7 @@ export const people: Person[] = [
     name: 'משה חסיד',
     nameEn: 'Moshe Chassid',
     description: 'איש ציבור ופעיל קהילתי מביאליסטוק.',
+    image: '/images/5eeb4e_c0eabcb3c0424ffd925afddcbd1f3594_mv2.jpg',
     contentSlug: 'moshe-chassid',
   },
   {
