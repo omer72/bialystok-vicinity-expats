@@ -22,7 +22,7 @@ export async function GET() {
 export async function POST(request: Request) {
   if (!(await verifyAdmin())) return unauthorized();
 
-  const { title, slug: providedSlug, image, body, frontmatter } = await request.json();
+  const { title, slug: providedSlug, image, youtubeUrl, body, frontmatter } = await request.json();
 
   if (!title) {
     return Response.json({ error: "Title is required" }, { status: 400 });
@@ -43,6 +43,7 @@ export async function POST(request: Request) {
     ...frontmatter,
   };
   if (image) fm.image = image;
+  if (youtubeUrl) fm.youtube_url = youtubeUrl;
 
   writeFile(PAGES_DIR, slug, fm, body || "");
 

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import PageHeader from '@/components/PageHeader';
+import YouTubeEmbed from '@/components/YouTubeEmbed';
+import { getPageContent } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'וידיאו',
@@ -8,11 +10,18 @@ export const metadata: Metadata = {
 };
 
 export default function VideosPage() {
+  const content = getPageContent('videos');
+
   return (
     <>
       <PageHeader title="וידיאו" subtitle="סרטונים הקשורים לקהילת ביאליסטוק" />
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-4xl px-4 lg:px-8">
+          {content?.youtubeUrl && (
+            <div className="mb-12">
+              <YouTubeEmbed url={content.youtubeUrl} />
+            </div>
+          )}
           <div className="text-center mb-10">
             <h2 className="text-heading-lg text-primary-900 font-bold">סרטון הקהילה — ביאליסטוק</h2>
             <p className="mt-2 text-body-lg text-neutral-700">

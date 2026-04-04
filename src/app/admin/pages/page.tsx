@@ -28,6 +28,7 @@ interface PageItem {
   slug: string;
   title: string;
   image?: string;
+  youtubeUrl?: string;
   body: string;
 }
 
@@ -35,10 +36,11 @@ interface PageFormData {
   title: string;
   slug: string;
   image: string;
+  youtubeUrl: string;
   body: string;
 }
 
-const emptyForm: PageFormData = { title: '', slug: '', image: '', body: '' };
+const emptyForm: PageFormData = { title: '', slug: '', image: '', youtubeUrl: '', body: '' };
 
 export default function AdminPagesPage() {
   const { showToast } = useAdmin();
@@ -68,7 +70,7 @@ export default function AdminPagesPage() {
     const res = await fetch(`/api/admin/pages/${slug}`);
     if (res.ok) {
       const data = await res.json();
-      setForm({ title: data.title, slug: data.slug, image: data.image || '', body: data.body });
+      setForm({ title: data.title, slug: data.slug, image: data.image || '', youtubeUrl: data.youtubeUrl || '', body: data.body });
       setEditingSlug(slug);
       setFormOpen(true);
     }
@@ -168,6 +170,13 @@ export default function AdminPagesPage() {
           <ImageUpload
             value={form.image}
             onChange={(path) => setForm({ ...form, image: path })}
+          />
+          <TextField
+            label="קישור YouTube"
+            value={form.youtubeUrl}
+            onChange={(e) => setForm({ ...form, youtubeUrl: e.target.value })}
+            placeholder="https://www.youtube.com/watch?v=..."
+            sx={{ direction: 'ltr' }}
           />
           <TextField
             label="תוכן (Markdown)"

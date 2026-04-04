@@ -29,6 +29,7 @@ interface PageContent {
   title: string;
   body: string[];
   images: string[];
+  youtubeUrl?: string;
 }
 
 interface BlogContent {
@@ -272,7 +273,9 @@ export function getPageContent(
   const images = extractImages(raw);
   const bodyParagraphs = cleanBody(body);
 
-  return { title, body: bodyParagraphs, images };
+  const youtubeUrl = frontmatter.youtube_url || undefined;
+
+  return { title, body: bodyParagraphs, images, youtubeUrl };
 }
 
 /**
