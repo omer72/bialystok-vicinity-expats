@@ -8,19 +8,61 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import GroupsIcon from '@mui/icons-material/Groups';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import PageHeader from '@/components/PageHeader';
 import SectionHeader from '@/components/SectionHeader';
 
 const benefits = [
-  { title: 'שימור מורשת', description: 'סייעו בשימור זכרון קהילת ביאליסטוק לדורות הבאים.' },
-  { title: 'אירועים קהילתיים', description: 'השתתפו בטכסי אזכרה, כנסים ומפגשים.' },
-  { title: 'קשר קהילתי', description: 'חברו למשפחה גדולה של יוצאי ביאליסטוק והסביבה.' },
+  {
+    icon: <HistoryEduIcon sx={{ fontSize: 32 }} />,
+    title: 'שימור מורשת',
+    description: 'סייעו בשימור זכרון קהילת ביאליסטוק לדורות הבאים.',
+  },
+  {
+    icon: <GroupsIcon sx={{ fontSize: 32 }} />,
+    title: 'אירועים קהילתיים',
+    description: 'השתתפו בטכסי אזכרה, כנסים ומפגשים.',
+  },
+  {
+    icon: <FavoriteIcon sx={{ fontSize: 32 }} />,
+    title: 'קשר קהילתי',
+    description: 'חברו למשפחה גדולה של יוצאי ביאליסטוק והסביבה.',
+  },
+];
+
+const waysToHelp = [
+  {
+    icon: <VolunteerActivismIcon sx={{ fontSize: 28 }} />,
+    title: 'התנדבות',
+    description: 'תנו מזמנכם וסייעו בפעילויות הארגון — מארגנות אירועים ועד ליווי קשישים.',
+  },
+  {
+    icon: <FavoriteIcon sx={{ fontSize: 28 }} />,
+    title: 'תרומה',
+    description: 'ניתן לתרום לעמותה באמצעות פנייה ישירה לארגון בדוא"ל או בטלפון.',
+  },
 ];
 
 const faq = [
-  { q: 'מי יכול להצטרף?', a: 'כל מי שמרגיש קשר לקהילת ביאליסטוק — יוצאי העיר, צאצאיהם, ומי שמעוניין לסייע בהנצחת המורשת.' },
-  { q: 'האם יש דמי חברות?', a: 'לפרטים על דמי חברות ותנאי הצטרפות, צרו קשר עם הארגון.' },
-  { q: 'כיצד אפשר לתרום?', a: 'ניתן לתרום לעמותה באמצעות פנייה ישירה לארגון בדוא"ל או בטלפון.' },
+  {
+    q: 'מי יכול להצטרף?',
+    a: 'כל מי שמרגיש קשר לקהילת ביאליסטוק — יוצאי העיר, צאצאיהם, ומי שמעוניין לסייע בהנצחת המורשת.',
+  },
+  {
+    q: 'האם יש דמי חברות?',
+    a: 'לפרטים על דמי חברות ותנאי הצטרפות, צרו קשר עם הארגון.',
+  },
+  {
+    q: 'כיצד אפשר לתרום?',
+    a: 'ניתן לתרום לעמותה באמצעות פנייה ישירה לארגון בדוא"ל או בטלפון.',
+  },
+  {
+    q: 'אילו אירועים מתקיימים?',
+    a: 'הארגון מקיים טכסי אזכרה שנתיים, כנסים, מפגשים קהילתיים ופעילויות הנצחה ומורשת בהיכל ביאליסטוק.',
+  },
 ];
 
 export default function MembershipPage() {
@@ -42,11 +84,32 @@ export default function MembershipPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {benefits.map((b) => (
               <div key={b.title} className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent-100 mb-4">
-                  <span className="text-display-lg text-accent-700 font-bold">{b.title[0]}</span>
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent-100 mb-4 text-accent-700">
+                  {b.icon}
                 </div>
                 <h3 className="text-heading-sm font-semibold text-primary-900">{b.title}</h3>
                 <p className="mt-2 text-body-md text-neutral-500">{b.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Ways to Help */}
+      <section className="py-16 md:py-24 bg-primary-900">
+        <div className="mx-auto max-w-7xl px-4 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-display-lg text-white font-bold">איך אפשר לעזור?</h2>
+            <div className="mt-4 mx-auto w-15 h-[3px] bg-accent-500" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+            {waysToHelp.map((w) => (
+              <div key={w.title} className="bg-white/10 rounded-xl p-6 text-center">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-accent-500/20 mb-4 text-accent-300">
+                  {w.icon}
+                </div>
+                <h3 className="text-heading-sm font-semibold text-white">{w.title}</h3>
+                <p className="mt-2 text-body-md text-white/80">{w.description}</p>
               </div>
             ))}
           </div>

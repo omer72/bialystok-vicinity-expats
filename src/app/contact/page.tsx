@@ -8,6 +8,7 @@ import PageHeader from '@/components/PageHeader';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PlaceIcon from '@mui/icons-material/Place';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -54,6 +55,14 @@ export default function ContactPage() {
                     </a>
                   </div>
                 </li>
+                <li className="flex items-start gap-3">
+                  <AccessTimeIcon className="text-accent-500 mt-1" />
+                  <div>
+                    <p className="text-body-md font-semibold text-neutral-900">שעות פעילות</p>
+                    <p className="text-body-md text-neutral-500">ימים א&apos;-ה&apos; בבקרים (מועדון קשישים)</p>
+                    <p className="text-body-md text-neutral-500">אירועים ופעילויות — לפי תיאום מראש</p>
+                  </div>
+                </li>
               </ul>
             </div>
 
@@ -91,8 +100,8 @@ export default function ContactPage() {
       {/* Map Embed */}
       <section className="w-full">
         <iframe
-          title="מפת מיקום הארגון"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3383.1!2d34.888!3d32.032!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzLCsDAyJzAuMCJOIDM0wrA1Myc1NS4wIkU!5e0!3m2!1she!2sil!4v1600000000000"
+          title="מפת מיקום הארגון — טננבוים 17, יהוד-מונוסון"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3383.5!2d34.8875!3d32.0325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d3610c16be42d%3A0x6c9f2fd2a8e4ae7!2sYehud-Monosson!5e0!3m2!1she!2sil!4v1700000000000"
           width="100%"
           height="400"
           style={{ border: 0 }}
