@@ -143,7 +143,7 @@ function parseFrontmatter(content: string): {
  * Clean the body text: remove nav boilerplate, title, image URLs, blockquotes,
  * and footer. Return an array of non-empty content paragraphs.
  */
-function cleanBody(body: string, title: string): string[] {
+function cleanBody(body: string): string[] {
   const lines = body.split("\n");
   const cleaned: string[] = [];
   let foundContent = false;
@@ -270,7 +270,7 @@ export function getPageContent(
   const { frontmatter, body } = parseFrontmatter(raw);
   const title = frontmatter.title || "";
   const images = extractImages(raw);
-  const bodyParagraphs = cleanBody(body, title);
+  const bodyParagraphs = cleanBody(body);
 
   return { title, body: bodyParagraphs, images };
 }
@@ -290,7 +290,7 @@ export function getBlogContent(
   const images = extractImages(raw);
   const date = extractBlogDate(body);
   const author = extractBlogAuthor(body);
-  const bodyParagraphs = cleanBody(body, title);
+  const bodyParagraphs = cleanBody(body);
 
   return { title, body: bodyParagraphs, images, date, author };
 }
