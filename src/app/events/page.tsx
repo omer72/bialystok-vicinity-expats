@@ -66,7 +66,7 @@ export default function EventsPage() {
               >
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="bg-accent-500 text-white text-label font-bold px-2.5 py-1 rounded">
+                    <span className="bg-accent-700 text-white text-label font-bold px-2.5 py-1 rounded">
                       {event.date}
                     </span>
                     <span className="text-body-sm text-neutral-500">{event.location}</span>

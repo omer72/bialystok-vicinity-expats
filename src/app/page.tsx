@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import SectionHeader from '@/components/SectionHeader';
 
 const timelineEntries = [
@@ -17,8 +18,15 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-[50vh] md:min-h-[70vh] flex items-center bg-gradient-to-l from-primary-900/90 to-primary-900/60 mt-[72px]">
-        <div className="absolute inset-0 bg-primary-900/70" />
+      <section className="relative min-h-[50vh] md:min-h-[70vh] flex items-center mt-[72px]">
+        <Image
+          src="/images/15df41_4b5ee5dc822543baa21e8181361358e5_mv2.jpg"
+          alt="אנדרטת קריית ביאליסטוק"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-primary-900/75" />
         <div className="relative z-10 mx-auto max-w-7xl px-4 lg:px-8 py-16 md:py-24">
           <div className="max-w-xl">
             <h1 className="text-display-xl text-white font-extrabold leading-tight">
@@ -31,7 +39,7 @@ export default function HomePage() {
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 href="/about"
-                className="inline-block bg-accent-500 text-white font-semibold py-3 px-7 rounded-lg hover:bg-accent-700 hover:-translate-y-0.5 hover:shadow-md transition-all"
+                className="inline-block bg-accent-700 text-white font-semibold py-3 px-7 rounded-lg hover:bg-accent-500 hover:-translate-y-0.5 hover:shadow-md transition-all"
               >
                 קראו עוד
               </Link>
@@ -125,7 +133,7 @@ export default function HomePage() {
       </section>
 
       {/* Membership CTA */}
-      <section className="py-16 md:py-24 bg-accent-500">
+      <section className="py-16 md:py-24 bg-accent-700">
         <div className="mx-auto max-w-7xl px-4 lg:px-8 text-center">
           <h2 className="text-display-lg text-white font-bold">הצטרפו למשפחת ביאליסטוק</h2>
           <p className="mt-4 text-body-lg text-white/90 max-w-xl mx-auto">

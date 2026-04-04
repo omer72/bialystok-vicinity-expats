@@ -19,11 +19,34 @@ export const metadata: Metadata = {
   description:
     'אתר הבית של ארגון יוצאי ביאליסטוק והסביבה בישראל — הנצחת קהילת יהודי ביאליסטוק והנחלת מורשתה לדורות הבאים.',
   keywords: ['ביאליסטוק', 'שואה', 'הנצחה', 'יהוד', 'קריית ביאליסטוק', 'ניצולים'],
+  metadataBase: new URL('https://www.bialystokvicinityexpatsisrael.org.il'),
   openGraph: {
     locale: 'he_IL',
     type: 'website',
     siteName: 'ארגון יוצאי ביאליסטוק והסביבה בישראל',
   },
+  alternates: {
+    canonical: '/',
+  },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'ארגון יוצאי ביאליסטוק והסביבה בישראל',
+  alternateName: 'Bialystok Vicinity Expats Israel Association',
+  url: 'https://www.bialystokvicinityexpatsisrael.org.il',
+  email: 'bialystok.israel@gmail.com',
+  telephone: '+972-54-9932329',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'טננבוים 17',
+    addressLocality: 'יהוד',
+    addressCountry: 'IL',
+    postalCode: '5621108',
+  },
+  description:
+    'עמותה שמטרתה להנציח את 200 אלף בני קהילת יהודי העיר ביאליסטוק שבפולין וסביבותיה, אשר נספו בשואה, להנחיל את מורשתה המפוארת של הקהילה לדורות הבאים.',
 };
 
 export default function RootLayout({
@@ -33,6 +56,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="he" dir="rtl" className={heebo.className}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-dvh flex flex-col bg-neutral-50 text-neutral-900 antialiased">
         <ThemeRegistry>
           <a
