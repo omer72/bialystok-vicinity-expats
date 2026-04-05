@@ -23,6 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useAdmin } from '../layout';
 import ImageUpload from '@/components/ImageUpload';
+import PdfUpload from '@/components/PdfUpload';
 
 interface Person {
   slug: string;
@@ -30,6 +31,8 @@ interface Person {
   nameEn: string;
   description: string;
   image?: string;
+  youtubeUrl?: string;
+  pdfUrl?: string;
   contentSlug?: string;
 }
 
@@ -39,10 +42,12 @@ interface PersonFormData {
   slug: string;
   description: string;
   image: string;
+  youtubeUrl: string;
+  pdfUrl: string;
   body: string;
 }
 
-const emptyForm: PersonFormData = { name: '', nameEn: '', slug: '', description: '', image: '', body: '' };
+const emptyForm: PersonFormData = { name: '', nameEn: '', slug: '', description: '', image: '', youtubeUrl: '', pdfUrl: '', body: '' };
 
 export default function AdminPeoplePage() {
   const { showToast } = useAdmin();
@@ -78,6 +83,8 @@ export default function AdminPeoplePage() {
         slug: data.slug,
         description: data.description || '',
         image: data.image || '',
+        youtubeUrl: data.youtubeUrl || '',
+        pdfUrl: data.pdfUrl || '',
         body: data.body || '',
       });
       setEditingSlug(slug);
@@ -197,6 +204,17 @@ export default function AdminPeoplePage() {
           <ImageUpload
             value={form.image}
             onChange={(path) => setForm({ ...form, image: path })}
+          />
+          <TextField
+            label="קישור YouTube"
+            value={form.youtubeUrl}
+            onChange={(e) => setForm({ ...form, youtubeUrl: e.target.value })}
+            placeholder="https://www.youtube.com/watch?v=..."
+            sx={{ direction: 'ltr' }}
+          />
+          <PdfUpload
+            value={form.pdfUrl}
+            onChange={(path) => setForm({ ...form, pdfUrl: path })}
           />
           <TextField
             label="תוכן (Markdown)"

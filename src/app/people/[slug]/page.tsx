@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import PageHeader from '@/components/PageHeader';
 import PdfPreview from '@/components/PdfPreview';
+import YouTubeEmbed from '@/components/YouTubeEmbed';
 import { people } from '@/lib/people';
 
 export function generateStaticParams() {
@@ -107,7 +108,7 @@ function extractFrontmatterField(raw: string, field: string): string | undefined
   return undefined;
 }
 
-function loadPersonContent(contentSlug: string): { paragraphs: string[] | null; pdfUrl?: string } {
+function loadPersonContent(contentSlug: string): { paragraphs: string[] | null; pdfUrl?: string; youtubeUrl?: string } {
   try {
     const contentDir = path.join(process.cwd(), '..', 'content', 'pages');
     const filePath = path.join(contentDir, `${contentSlug}.md`);
@@ -115,6 +116,7 @@ function loadPersonContent(contentSlug: string): { paragraphs: string[] | null; 
     return {
       paragraphs: parseMarkdownContent(raw),
       pdfUrl: extractFrontmatterField(raw, 'pdf_url'),
+      youtubeUrl: extractFrontmatterField(raw, 'youtube_url'),
     };
   } catch {
     return { paragraphs: null };
@@ -126,7 +128,7 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
   const person = people.find((p) => p.slug === slug);
   if (!person) notFound();
 
-  const { paragraphs, pdfUrl } = person.contentSlug ? loadPersonContent(person.contentSlug) : { paragraphs: null, pdfUrl: undefined };
+  const { paragraphs, pdfUrl, youtubeUrl } = person.contentSlug ? loadPersonContent(person.contentSlug) : { paragraphs: null, pdfUrl: undefined, youtubeUrl: undefined };
 
   return (
     <>
@@ -178,6 +180,12 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
             <p className="text-body-lg text-neutral-700 leading-relaxed" dir="rtl">
               {person.description}
             </p>
+          )}
+
+          {youtubeUrl && (
+            <div className="mt-8">
+              <YouTubeEmbed url={youtubeUrl} />
+            </div>
           )}
 
           {pdfUrl && (

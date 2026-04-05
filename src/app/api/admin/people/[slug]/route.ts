@@ -23,6 +23,8 @@ export async function GET(
 
   return Response.json({
     ...person,
+    youtubeUrl: content?.frontmatter?.youtube_url || "",
+    pdfUrl: content?.frontmatter?.pdf_url || "",
     body: content?.body || "",
     frontmatter: content?.frontmatter || {},
   });
@@ -42,7 +44,7 @@ export async function PUT(
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
-  const { name, nameEn, description, image, body, frontmatter } =
+  const { name, nameEn, description, image, youtubeUrl, pdfUrl, body, frontmatter } =
     await request.json();
 
   // Update the markdown content file
@@ -53,6 +55,14 @@ export async function PUT(
     ...frontmatter,
   };
   if (name) fm.title = name;
+  if (youtubeUrl !== undefined) {
+    if (youtubeUrl) fm.youtube_url = youtubeUrl;
+    else delete fm.youtube_url;
+  }
+  if (pdfUrl !== undefined) {
+    if (pdfUrl) fm.pdf_url = pdfUrl;
+    else delete fm.pdf_url;
+  }
 
   writeFile(PAGES_DIR, contentSlug, fm, body ?? existing?.body ?? "");
 

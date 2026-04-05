@@ -16,7 +16,7 @@ export async function GET() {
 export async function POST(request: Request) {
   if (!(await verifyAdmin())) return unauthorized();
 
-  const { name, nameEn, description, slug: providedSlug, image, body } =
+  const { name, nameEn, description, slug: providedSlug, image, youtubeUrl, pdfUrl, body } =
     await request.json();
 
   if (!name || !nameEn) {
@@ -41,6 +41,8 @@ export async function POST(request: Request) {
     title: name,
     scraped_at: new Date().toISOString().split("T")[0],
   };
+  if (youtubeUrl) fm.youtube_url = youtubeUrl;
+  if (pdfUrl) fm.pdf_url = pdfUrl;
   writeFile(PAGES_DIR, contentSlug, fm, body || `# ${name}\n`);
 
   // Append to people.ts data array
