@@ -24,6 +24,7 @@ export async function GET(
     title: file.frontmatter.title || "",
     image: file.frontmatter.image || "",
     youtubeUrl: file.frontmatter.youtube_url || "",
+    pdfUrl: file.frontmatter.pdf_url || "",
     frontmatter: file.frontmatter,
     body: file.body,
   });
@@ -42,7 +43,7 @@ export async function PUT(
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
-  const { title, image, youtubeUrl, body, frontmatter } = await request.json();
+  const { title, image, youtubeUrl, pdfUrl, body, frontmatter } = await request.json();
 
   const fm: Record<string, string> = {
     ...existing.frontmatter,
@@ -56,6 +57,10 @@ export async function PUT(
   if (youtubeUrl !== undefined) {
     if (youtubeUrl) fm.youtube_url = youtubeUrl;
     else delete fm.youtube_url;
+  }
+  if (pdfUrl !== undefined) {
+    if (pdfUrl) fm.pdf_url = pdfUrl;
+    else delete fm.pdf_url;
   }
 
   writeFile(PAGES_DIR, slug, fm, body ?? existing.body);

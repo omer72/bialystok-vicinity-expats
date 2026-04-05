@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import PageHeader from '@/components/PageHeader';
 import YouTubeEmbed from '@/components/YouTubeEmbed';
+import PdfPreview from '@/components/PdfPreview';
 import { getPageContent } from '@/lib/content';
 
 export const metadata: Metadata = {
@@ -21,6 +22,9 @@ export default function VideosPage() {
             <div className="mb-12">
               <YouTubeEmbed url={content.youtubeUrl} />
             </div>
+          )}
+          {content?.pdfUrl && (
+            <PdfPreview url={content.pdfUrl} title={content.title} />
           )}
           <div className="text-center mb-10">
             <h2 className="text-heading-lg text-primary-900 font-bold">סרטון הקהילה — ביאליסטוק</h2>

@@ -30,6 +30,7 @@ interface PageContent {
   body: string[];
   images: string[];
   youtubeUrl?: string;
+  pdfUrl?: string;
 }
 
 interface BlogContent {
@@ -274,8 +275,9 @@ export function getPageContent(
   const bodyParagraphs = cleanBody(body);
 
   const youtubeUrl = frontmatter.youtube_url || undefined;
+  const pdfUrl = frontmatter.pdf_url || undefined;
 
-  return { title, body: bodyParagraphs, images, youtubeUrl };
+  return { title, body: bodyParagraphs, images, youtubeUrl, pdfUrl };
 }
 
 /**

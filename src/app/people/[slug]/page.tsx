@@ -5,6 +5,7 @@ import Image from 'next/image';
 import fs from 'fs';
 import path from 'path';
 import PageHeader from '@/components/PageHeader';
+import PdfPreview from '@/components/PdfPreview';
 import { people } from '@/lib/people';
 
 export function generateStaticParams() {
@@ -86,14 +87,37 @@ function parseMarkdownContent(raw: string): string[] {
   return paragraphs;
 }
 
-function loadPersonContent(contentSlug: string): string[] | null {
+function extractFrontmatterField(raw: string, field: string): string | undefined {
+  if (!raw.startsWith('---')) return undefined;
+  const endIndex = raw.indexOf('---', 3);
+  if (endIndex === -1) return undefined;
+  const fmBlock = raw.slice(3, endIndex);
+  for (const line of fmBlock.split('\n')) {
+    const colonIdx = line.indexOf(':');
+    if (colonIdx === -1) continue;
+    const key = line.slice(0, colonIdx).trim();
+    if (key === field) {
+      let value = line.slice(colonIdx + 1).trim();
+      if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1);
+      }
+      return value || undefined;
+    }
+  }
+  return undefined;
+}
+
+function loadPersonContent(contentSlug: string): { paragraphs: string[] | null; pdfUrl?: string } {
   try {
     const contentDir = path.join(process.cwd(), '..', 'content', 'pages');
     const filePath = path.join(contentDir, `${contentSlug}.md`);
     const raw = fs.readFileSync(filePath, 'utf-8');
-    return parseMarkdownContent(raw);
+    return {
+      paragraphs: parseMarkdownContent(raw),
+      pdfUrl: extractFrontmatterField(raw, 'pdf_url'),
+    };
   } catch {
-    return null;
+    return { paragraphs: null };
   }
 }
 
@@ -102,7 +126,7 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
   const person = people.find((p) => p.slug === slug);
   if (!person) notFound();
 
-  const paragraphs = person.contentSlug ? loadPersonContent(person.contentSlug) : null;
+  const { paragraphs, pdfUrl } = person.contentSlug ? loadPersonContent(person.contentSlug) : { paragraphs: null, pdfUrl: undefined };
 
   return (
     <>
@@ -154,6 +178,10 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
             <p className="text-body-lg text-neutral-700 leading-relaxed" dir="rtl">
               {person.description}
             </p>
+          )}
+
+          {pdfUrl && (
+            <PdfPreview url={pdfUrl} title={person.name} />
           )}
 
           <div className="mt-8">
