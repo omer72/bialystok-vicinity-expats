@@ -23,7 +23,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import dynamic from 'next/dynamic';
 import { useAdmin } from '../layout';
-import ImageUpload from '@/components/ImageUpload';
+import MultiImageUpload from '@/components/MultiImageUpload';
+import ImageDisplayModeToggle, { type ImageDisplayMode } from '@/components/ImageDisplayModeToggle';
 import PdfUpload from '@/components/PdfUpload';
 
 const HtmlEditor = dynamic(() => import('@/components/HtmlEditor'), { ssr: false });
@@ -40,13 +41,14 @@ interface PageItem {
 interface PageFormData {
   title: string;
   slug: string;
-  image: string;
+  images: string[];
+  imageDisplayMode: ImageDisplayMode;
   youtubeUrl: string;
   pdfUrl: string;
   body: string;
 }
 
-const emptyForm: PageFormData = { title: '', slug: '', image: '', youtubeUrl: '', pdfUrl: '', body: '' };
+const emptyForm: PageFormData = { title: '', slug: '', images: [], imageDisplayMode: 'grid', youtubeUrl: '', pdfUrl: '', body: '' };
 
 export default function AdminPagesPage() {
   const { showToast } = useAdmin();
@@ -76,7 +78,7 @@ export default function AdminPagesPage() {
     const res = await fetch(`/api/admin/pages/${slug}`);
     if (res.ok) {
       const data = await res.json();
-      setForm({ title: data.title, slug: data.slug, image: data.image || '', youtubeUrl: data.youtubeUrl || '', pdfUrl: data.pdfUrl || '', body: data.body });
+      setForm({ title: data.title, slug: data.slug, images: data.images || (data.image ? [data.image] : []), imageDisplayMode: data.imageDisplayMode || 'grid', youtubeUrl: data.youtubeUrl || '', pdfUrl: data.pdfUrl || '', body: data.body });
       setEditingSlug(slug);
       setFormOpen(true);
     }
@@ -173,9 +175,14 @@ export default function AdminPagesPage() {
             required={!editingSlug}
             sx={{ direction: 'ltr' }}
           />
-          <ImageUpload
-            value={form.image}
-            onChange={(path) => setForm({ ...form, image: path })}
+          <MultiImageUpload
+            value={form.images}
+            onChange={(images) => setForm({ ...form, images })}
+          />
+          <ImageDisplayModeToggle
+            value={form.imageDisplayMode}
+            onChange={(mode) => setForm({ ...form, imageDisplayMode: mode })}
+            visible={form.images.length >= 2}
           />
           <TextField
             label="קישור YouTube"

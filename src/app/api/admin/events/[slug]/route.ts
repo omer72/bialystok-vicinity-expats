@@ -19,10 +19,21 @@ export async function GET(
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
+  const fmImages = file.frontmatter.images;
+  const fmImage = file.frontmatter.image;
+  let images: string[] = [];
+  if (Array.isArray(fmImages) && fmImages.length > 0) {
+    images = fmImages as string[];
+  } else if (typeof fmImage === 'string' && fmImage) {
+    images = [fmImage];
+  }
+
   return Response.json({
     slug: file.slug,
     title: file.frontmatter.title || "",
     image: file.frontmatter.image || "",
+    images,
+    imageDisplayMode: (file.frontmatter.image_display_mode as string) || "grid",
     youtubeUrl: file.frontmatter.youtube_url || "",
     pdfUrl: file.frontmatter.pdf_url || "",
     frontmatter: file.frontmatter,
@@ -43,16 +54,25 @@ export async function PUT(
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
-  const { title, image, youtubeUrl, pdfUrl, body, frontmatter } = await request.json();
+  const { title, image, images, imageDisplayMode, youtubeUrl, pdfUrl, body, frontmatter } = await request.json();
 
-  const fm: Record<string, string> = {
+  const fm: Record<string, string | string[]> = {
     ...existing.frontmatter,
     ...frontmatter,
   };
   if (title) fm.title = title;
-  if (image !== undefined) {
-    if (image) fm.image = image;
-    else delete fm.image;
+
+  // Handle images array
+  const resolvedImages: string[] = images ?? (image ? [image] : []);
+  if (resolvedImages.length > 0) {
+    fm.images = resolvedImages;
+    fm.image = resolvedImages[0];
+  } else {
+    delete fm.images;
+    delete fm.image;
+  }
+  if (imageDisplayMode) {
+    fm.image_display_mode = imageDisplayMode;
   }
   if (youtubeUrl !== undefined) {
     if (youtubeUrl) fm.youtube_url = youtubeUrl;

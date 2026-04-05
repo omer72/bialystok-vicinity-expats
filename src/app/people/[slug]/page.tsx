@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import fs from 'fs';
 import path from 'path';
 import PageHeader from '@/components/PageHeader';
 import PdfPreview from '@/components/PdfPreview';
 import YouTubeEmbed from '@/components/YouTubeEmbed';
+import ImageGallery from '@/components/ImageGallery';
 import { people } from '@/lib/people';
 
 export function generateStaticParams() {
@@ -108,7 +108,32 @@ function extractFrontmatterField(raw: string, field: string): string | undefined
   return undefined;
 }
 
-function loadPersonContent(contentSlug: string): { paragraphs: string[] | null; pdfUrl?: string; youtubeUrl?: string } {
+function extractFrontmatterImages(raw: string): string[] {
+  if (!raw.startsWith('---')) return [];
+  const endIndex = raw.indexOf('---', 3);
+  if (endIndex === -1) return [];
+  const fmBlock = raw.slice(3, endIndex);
+  const lines = fmBlock.split('\n');
+  const images: string[] = [];
+  let inImages = false;
+  for (const line of lines) {
+    if (line.match(/^images\s*:/)) {
+      inImages = true;
+      continue;
+    }
+    if (inImages) {
+      const match = line.match(/^\s+-\s+"?'?([^"']+)"?'?\s*$/);
+      if (match) {
+        images.push(match[1]);
+      } else {
+        inImages = false;
+      }
+    }
+  }
+  return images;
+}
+
+function loadPersonContent(contentSlug: string): { paragraphs: string[] | null; pdfUrl?: string; youtubeUrl?: string; images?: string[]; imageDisplayMode?: string } {
   try {
     const contentDir = path.join(process.cwd(), '..', 'content', 'pages');
     const filePath = path.join(contentDir, `${contentSlug}.md`);
@@ -117,6 +142,8 @@ function loadPersonContent(contentSlug: string): { paragraphs: string[] | null; 
       paragraphs: parseMarkdownContent(raw),
       pdfUrl: extractFrontmatterField(raw, 'pdf_url'),
       youtubeUrl: extractFrontmatterField(raw, 'youtube_url'),
+      images: extractFrontmatterImages(raw),
+      imageDisplayMode: extractFrontmatterField(raw, 'image_display_mode'),
     };
   } catch {
     return { paragraphs: null };
@@ -128,7 +155,13 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
   const person = people.find((p) => p.slug === slug);
   if (!person) notFound();
 
-  const { paragraphs, pdfUrl, youtubeUrl } = person.contentSlug ? loadPersonContent(person.contentSlug) : { paragraphs: null, pdfUrl: undefined, youtubeUrl: undefined };
+  const { paragraphs, pdfUrl, youtubeUrl, images: contentImages, imageDisplayMode } = person.contentSlug ? loadPersonContent(person.contentSlug) : { paragraphs: null, pdfUrl: undefined, youtubeUrl: undefined, images: undefined, imageDisplayMode: undefined };
+
+  // Resolve images: prefer content frontmatter images, fall back to person.image
+  const resolvedImages = (contentImages && contentImages.length > 0)
+    ? contentImages
+    : (person.image ? [person.image] : []);
+  const resolvedDisplayMode = (imageDisplayMode as 'grid' | 'carousel') || 'grid';
 
   return (
     <>
@@ -136,18 +169,14 @@ export default async function PersonPage({ params }: { params: Promise<{ slug: s
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-3xl px-4 lg:px-8">
-          {/* Portrait image */}
-          {person.image && (
-            <div className="mb-8 flex justify-center">
-              <div className="relative overflow-hidden rounded-xl shadow-md">
-                <Image
-                  src={person.image}
-                  alt={person.name}
-                  width={300}
-                  height={400}
-                  className="object-cover"
-                />
-              </div>
+          {/* Images */}
+          {resolvedImages.length > 0 && (
+            <div className="mb-8">
+              <ImageGallery
+                images={resolvedImages}
+                displayMode={resolvedDisplayMode}
+                alt={person.name}
+              />
             </div>
           )}
 

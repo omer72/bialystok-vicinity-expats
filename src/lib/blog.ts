@@ -4,6 +4,8 @@ export interface BlogPost {
   excerpt: string;
   date: string;
   image?: string;
+  images?: string[];
+  imageDisplayMode?: 'grid' | 'carousel';
 }
 
 export const blogPosts: BlogPost[] = [

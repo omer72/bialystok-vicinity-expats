@@ -22,7 +22,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useAdmin } from '../layout';
-import ImageUpload from '@/components/ImageUpload';
+import MultiImageUpload from '@/components/MultiImageUpload';
+import ImageDisplayModeToggle, { type ImageDisplayMode } from '@/components/ImageDisplayModeToggle';
 import PdfUpload from '@/components/PdfUpload';
 
 interface Person {
@@ -41,13 +42,14 @@ interface PersonFormData {
   nameEn: string;
   slug: string;
   description: string;
-  image: string;
+  images: string[];
+  imageDisplayMode: ImageDisplayMode;
   youtubeUrl: string;
   pdfUrl: string;
   body: string;
 }
 
-const emptyForm: PersonFormData = { name: '', nameEn: '', slug: '', description: '', image: '', youtubeUrl: '', pdfUrl: '', body: '' };
+const emptyForm: PersonFormData = { name: '', nameEn: '', slug: '', description: '', images: [], imageDisplayMode: 'grid', youtubeUrl: '', pdfUrl: '', body: '' };
 
 export default function AdminPeoplePage() {
   const { showToast } = useAdmin();
@@ -82,7 +84,8 @@ export default function AdminPeoplePage() {
         nameEn: data.nameEn,
         slug: data.slug,
         description: data.description || '',
-        image: data.image || '',
+        images: data.images || (data.image ? [data.image] : []),
+        imageDisplayMode: data.imageDisplayMode || 'grid',
         youtubeUrl: data.youtubeUrl || '',
         pdfUrl: data.pdfUrl || '',
         body: data.body || '',
@@ -201,9 +204,14 @@ export default function AdminPeoplePage() {
             multiline
             minRows={2}
           />
-          <ImageUpload
-            value={form.image}
-            onChange={(path) => setForm({ ...form, image: path })}
+          <MultiImageUpload
+            value={form.images}
+            onChange={(images) => setForm({ ...form, images })}
+          />
+          <ImageDisplayModeToggle
+            value={form.imageDisplayMode}
+            onChange={(mode) => setForm({ ...form, imageDisplayMode: mode })}
+            visible={form.images.length >= 2}
           />
           <TextField
             label="קישור YouTube"

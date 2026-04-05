@@ -4,6 +4,8 @@ export interface Person {
   nameEn: string;
   description: string;
   image?: string;
+  images?: string[];
+  imageDisplayMode?: 'grid' | 'carousel';
   contentSlug?: string;
 }
 

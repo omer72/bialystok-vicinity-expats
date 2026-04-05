@@ -9,16 +9,16 @@ export const PAGES_DIR = path.join(CONTENT_DIR, "pages");
 
 export interface ContentFile {
   slug: string;
-  frontmatter: Record<string, string>;
+  frontmatter: Record<string, string | string[]>;
   body: string;
   raw: string;
 }
 
 export function parseFrontmatter(content: string): {
-  frontmatter: Record<string, string>;
+  frontmatter: Record<string, string | string[]>;
   body: string;
 } {
-  const frontmatter: Record<string, string> = {};
+  const frontmatter: Record<string, string | string[]> = {};
 
   if (!content.startsWith("---")) {
     return { frontmatter, body: content };
@@ -30,11 +30,37 @@ export function parseFrontmatter(content: string): {
   }
 
   const fmBlock = content.slice(3, endIndex).trim();
-  for (const line of fmBlock.split("\n")) {
+  const lines = fmBlock.split("\n");
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
     const colonIdx = line.indexOf(":");
-    if (colonIdx === -1) continue;
+    if (colonIdx === -1) {
+      i++;
+      continue;
+    }
     const key = line.slice(0, colonIdx).trim();
     let value = line.slice(colonIdx + 1).trim();
+
+    // Check if next lines are YAML array items (  - value)
+    if (!value && i + 1 < lines.length && lines[i + 1].match(/^\s+-\s/)) {
+      const items: string[] = [];
+      i++;
+      while (i < lines.length && lines[i].match(/^\s+-\s/)) {
+        let item = lines[i].replace(/^\s+-\s*/, "").trim();
+        if (
+          (item.startsWith('"') && item.endsWith('"')) ||
+          (item.startsWith("'") && item.endsWith("'"))
+        ) {
+          item = item.slice(1, -1);
+        }
+        items.push(item);
+        i++;
+      }
+      frontmatter[key] = items;
+      continue;
+    }
+
     if (
       (value.startsWith('"') && value.endsWith('"')) ||
       (value.startsWith("'") && value.endsWith("'"))
@@ -42,6 +68,7 @@ export function parseFrontmatter(content: string): {
       value = value.slice(1, -1);
     }
     frontmatter[key] = value;
+    i++;
   }
 
   const body = content.slice(endIndex + 3).trim();
@@ -49,12 +76,20 @@ export function parseFrontmatter(content: string): {
 }
 
 export function buildMarkdown(
-  frontmatter: Record<string, string>,
+  frontmatter: Record<string, string | string[]>,
   body: string
 ): string {
-  const fmLines = Object.entries(frontmatter).map(
-    ([k, v]) => `${k}: "${v}"`
-  );
+  const fmLines: string[] = [];
+  for (const [k, v] of Object.entries(frontmatter)) {
+    if (Array.isArray(v)) {
+      fmLines.push(`${k}:`);
+      for (const item of v) {
+        fmLines.push(`  - "${item}"`);
+      }
+    } else {
+      fmLines.push(`${k}: "${v}"`);
+    }
+  }
   return `---\n${fmLines.join("\n")}\n---\n\n${body}\n`;
 }
 
@@ -84,7 +119,7 @@ export function readFile(dir: string, slug: string): ContentFile | null {
 export function writeFile(
   dir: string,
   slug: string,
-  frontmatter: Record<string, string>,
+  frontmatter: Record<string, string | string[]>,
   body: string
 ): void {
   if (!fs.existsSync(dir)) {

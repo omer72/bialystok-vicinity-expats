@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import path from 'path';
 import fs from 'fs';
 import PageHeader from '@/components/PageHeader';
+import ImageGallery from '@/components/ImageGallery';
 import { blogPosts } from '@/lib/blog';
 
 /** Resolve the directory that holds scraped markdown files. */
@@ -76,13 +76,62 @@ function parseMarkdown(raw: string): string[] {
   return paragraphs;
 }
 
-function loadPostContent(slug: string): string[] | null {
+function extractFrontmatterField(raw: string, field: string): string | undefined {
+  if (!raw.startsWith('---')) return undefined;
+  const endIndex = raw.indexOf('---', 3);
+  if (endIndex === -1) return undefined;
+  const fmBlock = raw.slice(3, endIndex);
+  for (const line of fmBlock.split('\n')) {
+    const colonIdx = line.indexOf(':');
+    if (colonIdx === -1) continue;
+    const key = line.slice(0, colonIdx).trim();
+    if (key === field) {
+      let value = line.slice(colonIdx + 1).trim();
+      if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1);
+      }
+      return value || undefined;
+    }
+  }
+  return undefined;
+}
+
+function extractFrontmatterImages(raw: string): string[] {
+  if (!raw.startsWith('---')) return [];
+  const endIndex = raw.indexOf('---', 3);
+  if (endIndex === -1) return [];
+  const fmBlock = raw.slice(3, endIndex);
+  const lines = fmBlock.split('\n');
+  const images: string[] = [];
+  let inImages = false;
+  for (const line of lines) {
+    if (line.match(/^images\s*:/)) {
+      inImages = true;
+      continue;
+    }
+    if (inImages) {
+      const match = line.match(/^\s+-\s+"?'?([^"']+)"?'?\s*$/);
+      if (match) {
+        images.push(match[1]);
+      } else {
+        inImages = false;
+      }
+    }
+  }
+  return images;
+}
+
+function loadPostContent(slug: string): { paragraphs: string[] | null; images: string[]; imageDisplayMode: string } {
   const filePath = path.join(contentDir, `${slug}.md`);
   try {
     const raw = fs.readFileSync(filePath, 'utf-8');
-    return parseMarkdown(raw);
+    return {
+      paragraphs: parseMarkdown(raw),
+      images: extractFrontmatterImages(raw),
+      imageDisplayMode: extractFrontmatterField(raw, 'image_display_mode') || 'grid',
+    };
   } catch {
-    return null;
+    return { paragraphs: null, images: [], imageDisplayMode: 'grid' };
   }
 }
 
@@ -102,8 +151,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) notFound();
 
-  const paragraphs = loadPostContent(slug);
+  const { paragraphs, images: contentImages, imageDisplayMode } = loadPostContent(slug);
   const hasContent = paragraphs && paragraphs.length > 0;
+
+  // Resolve images: prefer frontmatter images array, fall back to blog.ts image
+  const resolvedImages = contentImages.length > 0
+    ? contentImages
+    : (post.image ? [`/images/${post.image}`] : []);
+  const resolvedDisplayMode = imageDisplayMode as 'grid' | 'carousel';
 
   return (
     <>
@@ -111,15 +166,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-3xl px-4 lg:px-8">
-          {/* Featured image */}
-          {post.image && (
-            <div className="mb-8 overflow-hidden rounded-xl">
-              <Image
-                src={`/images/${post.image}`}
+          {/* Images */}
+          {resolvedImages.length > 0 && (
+            <div className="mb-8">
+              <ImageGallery
+                images={resolvedImages}
+                displayMode={resolvedDisplayMode}
                 alt={post.title}
-                width={800}
-                height={600}
-                className="w-full h-auto object-cover"
               />
             </div>
           )}
