@@ -39,6 +39,7 @@ export async function POST(request: Request) {
 
   const fm: Record<string, string> = {
     title,
+    content_format: "html",
     scraped_at: new Date().toISOString().split("T")[0],
     ...frontmatter,
   };

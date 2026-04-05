@@ -21,9 +21,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import dynamic from 'next/dynamic';
 import { useAdmin } from '../layout';
 import ImageUpload from '@/components/ImageUpload';
 import PdfUpload from '@/components/PdfUpload';
+
+const HtmlEditor = dynamic(() => import('@/components/HtmlEditor'), { ssr: false });
 
 interface PageItem {
   slug: string;
@@ -185,14 +188,13 @@ export default function AdminPagesPage() {
             value={form.pdfUrl}
             onChange={(path) => setForm({ ...form, pdfUrl: path })}
           />
-          <TextField
-            label="תוכן (Markdown)"
-            value={form.body}
-            onChange={(e) => setForm({ ...form, body: e.target.value })}
-            multiline
-            minRows={12}
-            sx={{ '& textarea': { direction: 'rtl', fontFamily: 'monospace' } }}
-          />
+          <Box>
+            <Typography variant="body2" sx={{ mb: 0.5, color: 'text.secondary' }}>תוכן</Typography>
+            <HtmlEditor
+              value={form.body}
+              onChange={(html) => setForm({ ...form, body: html })}
+            />
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setFormOpen(false)}>ביטול</Button>

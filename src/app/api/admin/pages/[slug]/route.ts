@@ -50,6 +50,7 @@ export async function PUT(
     ...frontmatter,
   };
   if (title) fm.title = title;
+  fm.content_format = "html";
   if (image !== undefined) {
     if (image) fm.image = image;
     else delete fm.image;

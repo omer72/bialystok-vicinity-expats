@@ -28,6 +28,9 @@ const NAV_IMAGE_IDS = [
 interface PageContent {
   title: string;
   body: string[];
+  /** Raw HTML body when content_format is "html". */
+  htmlBody?: string;
+  contentFormat?: string;
   images: string[];
   youtubeUrl?: string;
   pdfUrl?: string;
@@ -272,11 +275,16 @@ export function getPageContent(
   const { frontmatter, body } = parseFrontmatter(raw);
   const title = frontmatter.title || "";
   const images = extractImages(raw);
-  const bodyParagraphs = cleanBody(body);
+  const contentFormat = frontmatter.content_format || undefined;
 
   const youtubeUrl = frontmatter.youtube_url || undefined;
   const pdfUrl = frontmatter.pdf_url || undefined;
 
+  if (contentFormat === "html") {
+    return { title, body: [], htmlBody: body, contentFormat, images, youtubeUrl, pdfUrl };
+  }
+
+  const bodyParagraphs = cleanBody(body);
   return { title, body: bodyParagraphs, images, youtubeUrl, pdfUrl };
 }
 
